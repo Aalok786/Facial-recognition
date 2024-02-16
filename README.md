@@ -14,3 +14,5 @@ numpy
 opencv-python
 
 "Training_images" Folder will contain the pictures of students from all angles as much as you can do to recognise them from any angle. I am putting some of mine and roomies photos for demo.
+
+attendance_data.xlsx file will contain attendance in the excel sheet with date and time.

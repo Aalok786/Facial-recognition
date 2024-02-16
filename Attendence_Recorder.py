@@ -15,14 +15,16 @@ for image in os.listdir(path):
     imageName.append(os.path.splitext(image)[0])#get the name of image without extension
 
 
-
 def findEncodings(images):
     encodeList = []
     for img in images:
         img = cv2.cvtColor(img , cv2.COLOR_BGR2RGB)
-        encode = fr.face_encodings(img)[0]
+        try:
+            encode = fr.face_encodings(img)[0]
         # print(len(encode)) #shape : (180, 320, 3) len : 128
-        encodeList.append(encode)
+            encodeList.append(encode)
+        except IndexError:
+             print("Error encoding face in an image.")
     print("encoding complete")
     return encodeList
 
@@ -34,13 +36,12 @@ detectedPeople = {"Name" :  [] , "Time" : [ ]  , "Date" : [ ] }
 def markAttendence(name):
     
     try:
-        df = pd.read_csv("attendence_data.csv") ;
-    except:
-        df = pd.DataFrame(detectedPeople) 
-        df.to_csv("attendence_data.csv" , mode='w', index=False);
+        df = pd.read_csv("attendence_data.csv")
+    except FileNotFoundError:
+        df = pd.DataFrame(columns=["Name","Time","Date"])
 
 
-    nameList  = np.array(df.Name) ;
+    nameList  = np.array(df["Name"])
           
     now = datetime.now()
     dtString = now.strftime("%H:%M:%S")
@@ -56,8 +57,9 @@ def markAttendence(name):
         main2()
 
         if name not in nameList:
-            df2 = pd.DataFrame(detectedPeople) 
-            df2.to_csv("attendence_data.csv" , mode='w', index=False);
+            df2 = pd.DataFrame(detectedPeople)
+            df= pd.concat([df,df2], ignore_index=True) 
+            df2.to_csv("attendence_data.csv" , mode='w', index=False)
 
 
 def drawBox(name , frame , faceLoc):
