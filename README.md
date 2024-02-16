@@ -12,3 +12,5 @@ face-recognition-models
 moviepy
 numpy
 opencv-python
+
+"Training_images" Folder will contain the pictures of students from all angles as much as you can do to recognise them from any angle. I am putting some of mine and roomies photos for demo of mine.
